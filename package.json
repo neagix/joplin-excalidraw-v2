@@ -4,7 +4,7 @@
   "scripts": {
     "dist:webview": "vite build --config vite-webview.config.ts --emptyOutDir",
     "dist:local": "vite build --config vite-local.config.ts --emptyOutDir",
-    "dist": "webpack --joplin-plugin-config buildMain && npm run dist:webview && npm run dist:local && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
+    "dist": "SET NODE_OPTIONS=--openssl-legacy-provider && webpack --joplin-plugin-config buildMain && npm run dist:webview && npm run dist:local && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
     "prepare": "npm run dist",
     "update": "npm install -g generator-joplin && yo joplin --update"
   },
@@ -16,7 +16,7 @@
     "publish"
   ],
   "devDependencies": {
-    "@excalidraw/excalidraw": "0.12.0",
+    "@excalidraw/excalidraw": "0.17.2",
     "@types/node": "^14.0.14",
     "chalk": "^4.1.0",
     "copy-webpack-plugin": "^6.1.0",
@@ -27,13 +27,14 @@
     "react-dom": "^17.0.1",
     "tar": "^6.0.5",
     "ts-loader": "^7.0.5",
-    "typescript": "^3.9.3",
+    "typescript": "^5.3.3",
     "vite": "2.6.14",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "yargs": "^16.2.0"
   },
   "dependencies": {
+    "@types/node": "^14.0.14",
     "uuid": "^9.0.0"
   }
 }

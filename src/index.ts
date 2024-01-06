@@ -1,5 +1,6 @@
 import joplin from 'api'
 import { v4 as uuidv4 } from 'uuid';
+import { exportToSvg } from "@excalidraw/excalidraw";
 
 import { ContentScriptType, ToolbarButtonLocation, MenuItem, MenuItemLocation } from 'api/types'
 import { createDiagramResource, getDiagramResource, updateDiagramResource, clearDiskCache } from './resources';
@@ -31,7 +32,7 @@ const openDialog = async (diagramId: string, isNewDiagram: boolean) => {
 
   let dialogs = joplin.views.dialogs;
   let diglogHandle = await dialogs.create(`excalidraw-dialog-${uuidv4()}`);
-  
+
   let header = buildDialogHTML(diagramBody);
   let iframe = `<iframe id="excalidraw_iframe" style="position:absolute;border:0;width:100%;height:100%;" src="${appPath}\\local-excalidraw\\index.html" title="description"></iframe>`
 
@@ -45,8 +46,14 @@ const openDialog = async (diagramId: string, isNewDiagram: boolean) => {
   let dialogResult = await dialogs.open(diglogHandle);
   if (dialogResult.id === 'ok') {
     if (isNewDiagram) {
-      diagramId = await createDiagramResource(dialogResult.formData.main.excalidraw_diagram_json)
+      let diagramJson = dialogResult.formData.main.excalidraw_diagram_json;
+      let jsonObject = JSON.parse(diagramJson);
+      let r = exportToSvg({elements: jsonObject.elements, appState: jsonObject.appState, files: null})
+      r.then(async (svgEle) => {
+        console.log(svgEle)
+      diagramId = await createDiagramResource(diagramJson)
       await joplin.commands.execute('insertText', diagramMarkdown(diagramId))
+      })
     } else {
       await updateDiagramResource(diagramId, dialogResult.formData.main.excalidraw_diagram_json)
     }
@@ -56,9 +63,9 @@ const openDialog = async (diagramId: string, isNewDiagram: boolean) => {
 joplin.plugins.register({
   onStart: async () => {
 
-    const installDir = await joplin.plugins.installationDir();		
-		const excalidrawCssFilePath = installDir + '/excalidraw.css';
-		await (joplin as any).window.loadChromeCssFile(excalidrawCssFilePath);
+    const installDir = await joplin.plugins.installationDir();
+    const excalidrawCssFilePath = installDir + '/excalidraw.css';
+    await (joplin as any).window.loadChromeCssFile(excalidrawCssFilePath);
 
     clearDiskCache();
     /* support excalidraw dialog */
@@ -71,7 +78,7 @@ joplin.plugins.register({
     await joplin.contentScripts.onMessage(Config.ContentScriptId, (message: any) => {
       openDialog(message, false);
     });
-    
+
     await joplin.commands.register({
       name: 'addExcalidraw',
       label: 'add excalidraw panel',

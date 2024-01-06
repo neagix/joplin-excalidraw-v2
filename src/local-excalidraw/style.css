@@ -16,7 +16,7 @@
   }
   
   .excalidraw-wrapper {
-    height: 800px;
+    height: 700px;
     margin: 0px;
     position: relative;
   }
@@ -28,3 +28,11 @@
     transform: none;
   }
   
+  button.excalidraw-render-svg {
+    background: var(--color-surface-low);
+    border-radius: var(--border-radius-lg);
+    font-size: .75em;
+    padding: 0.625rem;
+    border: none;
+    color: var(--button-color, var(--color-on-surface));
+}

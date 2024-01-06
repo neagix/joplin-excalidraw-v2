@@ -1,6 +1,5 @@
 import joplin from 'api'
 import { v4 as uuidv4 } from 'uuid';
-import { exportToSvg } from "@excalidraw/excalidraw";
 
 import { ContentScriptType, ToolbarButtonLocation, MenuItem, MenuItemLocation } from 'api/types'
 import { createDiagramResource, getDiagramResource, updateDiagramResource, clearDiskCache } from './resources';
@@ -13,15 +12,16 @@ const buildDialogHTML = (diagramBody: string): string => {
   return `
 		<form name="main" style="display:none">
 			<input type="" name="excalidraw_diagram_json"  id="excalidraw_diagram_json" value='${diagramBody}'>
+			<input type="" name="excalidraw_diagram_svg"  id="excalidraw_diagram_svg" value=''>
 		</form>
 		`
 }
 
 function diagramMarkdown(diagramId: string) {
-  return `![excalidraw](excalidraw://${diagramId})`
+  return `![excalidraw.svg](:/${diagramId})`
 }
 
-const openDialog = async (diagramId: string, isNewDiagram: boolean) => {
+const openDialog = async (diagramId: string, isNewDiagram: boolean): Promise<string | null> => {
   let diagramBody = "{}";
   const appPath = await joplin.plugins.installationDir();
 
@@ -47,17 +47,17 @@ const openDialog = async (diagramId: string, isNewDiagram: boolean) => {
   if (dialogResult.id === 'ok') {
     if (isNewDiagram) {
       let diagramJson = dialogResult.formData.main.excalidraw_diagram_json;
-      let jsonObject = JSON.parse(diagramJson);
-      let r = exportToSvg({elements: jsonObject.elements, appState: jsonObject.appState, files: null})
-      r.then(async (svgEle) => {
-        console.log(svgEle)
-      diagramId = await createDiagramResource(diagramJson)
+      let diagramSvg = dialogResult.formData.main.excalidraw_diagram_svg;
+      diagramId = await createDiagramResource(diagramJson, diagramSvg)
       await joplin.commands.execute('insertText', diagramMarkdown(diagramId))
-      })
     } else {
-      await updateDiagramResource(diagramId, dialogResult.formData.main.excalidraw_diagram_json)
+      let diagramJson = dialogResult.formData.main.excalidraw_diagram_json;
+      let diagramSvg = dialogResult.formData.main.excalidraw_diagram_svg;
+      await updateDiagramResource(diagramId, diagramJson, diagramSvg)
     }
   }
+
+  return diagramId;
 }
 
 joplin.plugins.register({
@@ -68,15 +68,32 @@ joplin.plugins.register({
     await (joplin as any).window.loadChromeCssFile(excalidrawCssFilePath);
 
     clearDiskCache();
+
     /* support excalidraw dialog */
     await joplin.contentScripts.register(
       ContentScriptType.MarkdownItPlugin,
       Config.ContentScriptId,
-      './contentScript.js'
+      // './contentScript.js'
+      './contentScripts/markdownIt.js',
     );
 
-    await joplin.contentScripts.onMessage(Config.ContentScriptId, (message: any) => {
-      openDialog(message, false);
+    await joplin.contentScripts.onMessage(Config.ContentScriptId, async (message: any) => {
+      // Extract the ID
+      const fileURLMatch = /^(?:file|joplin[-a-z]+):\/\/.*\/([a-zA-Z0-9]+)[.]\w+(?:[?#]|$)/.exec(message);
+      const resourceLinkMatch = /^:\/([a-zA-Z0-9]+)$/.exec(message);
+
+      let resourceId: string | null = null;
+      if (fileURLMatch) {
+        resourceId = fileURLMatch[1];
+       } else if (resourceLinkMatch) {
+        resourceId = resourceLinkMatch[1];
+      }
+
+      if(resourceId == null){
+
+      }
+
+      return (await openDialog(resourceId, false));
     });
 
     await joplin.commands.register({

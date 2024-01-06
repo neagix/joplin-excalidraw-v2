@@ -1,0 +1,27 @@
+/* Reference: https://github.com/personalizedrefrigerator/joplin-plugin-freehand-drawing/blob/main/src/contentScripts/markdownIt.css */
+.excalidraw--editButton {
+	display: none;
+	width: min-content;
+	max-height: 50px;
+	z-index: 1;
+	opacity: 0.9;
+
+	align-self: flex-end;
+	justify-self: right;
+}
+
+.excalidraw--svgWrapper {
+	display: inline-grid;
+}
+
+.excalidraw--svgWrapper > * {
+	grid-row: 1;
+	grid-column: 1;
+}
+
+.excalidraw--svgWrapper:hover .excalidraw--editButton,
+.excalidraw--svgWrapper:focus .excalidraw--editButton,
+.excalidraw--svgWrapper:focus-within .excalidraw--editButton,
+.excalidraw--editButton:focus {
+	display: block;
+}

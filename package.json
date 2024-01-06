@@ -1,6 +1,6 @@
 {
   "name": "joplin-plugin-joplin-excalidraw",
-  "version": "1.4.1",
+  "version": "1.5.5",
   "scripts": {
     "dist:webview": "vite build --config vite-webview.config.ts --emptyOutDir",
     "dist:local": "vite build --config vite-local.config.ts --emptyOutDir",
@@ -17,6 +17,7 @@
   ],
   "devDependencies": {
     "@excalidraw/excalidraw": "0.17.2",
+    "@types/markdown-it": "^12.2.3",
     "@types/node": "^14.0.14",
     "chalk": "^4.1.0",
     "copy-webpack-plugin": "^6.1.0",
@@ -25,16 +26,14 @@
     "on-build-webpack": "^0.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hot-toast": "^2.4.1",
     "tar": "^6.0.5",
     "ts-loader": "^7.0.5",
     "typescript": "^5.3.3",
     "vite": "2.6.14",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "yargs": "^16.2.0"
-  },
-  "dependencies": {
-    "@types/node": "^14.0.14",
+    "yargs": "^16.2.0",
     "uuid": "^9.0.0"
   }
 }

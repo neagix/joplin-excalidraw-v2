@@ -78,6 +78,8 @@ joplin.plugins.register({
     );
 
     await joplin.contentScripts.onMessage(Config.ContentScriptId, async (message: any) => {
+      // decode message
+      message = decodeURIComponent(message)
       // Extract the ID
       const fileURLMatch = /^(?:file|joplin[-a-z]+):\/\/.*\/([a-zA-Z0-9]+)[.]\w+(?:[?#]|$)/.exec(message);
       const resourceLinkMatch = /^:\/([a-zA-Z0-9]+)$/.exec(message);
@@ -89,8 +91,8 @@ joplin.plugins.register({
         resourceId = resourceLinkMatch[1];
       }
 
-      if(resourceId == null){
-
+      if(resourceId === null){
+        return null;
       }
 
       return (await openDialog(resourceId, false));

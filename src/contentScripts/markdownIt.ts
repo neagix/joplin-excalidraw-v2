@@ -38,7 +38,9 @@ const editImage = (contentScriptId: string, container: HTMLElement, svgId: strin
 
 	// The webview api is different if we're running in the TinyMce editor vs if we're running
 	// in the preview pane.
-	const message = imageElem.src;
+	const imgSrc = imageElem.src;
+	// encode src
+	const message = encodeURIComponent(imgSrc);
 	const imageElemClass = `imageelem-${new Date().getTime()}`;
 	imageElem.classList.add(imageElemClass);
 

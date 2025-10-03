@@ -171,6 +171,15 @@ const pluginConfig = Object.assign({}, baseConfig, {
 				},
 			],
 		}),
+		new CopyPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, "node_modules/@excalidraw/excalidraw/dist/excalidraw-assets"),
+					// correct path is provided via 'window.EXCALIDRAW_ASSET_PATH'
+					to: path.resolve(__dirname, "dist/excalidraw-assets")
+				}
+			]
+    	}),
 	],
 });
 

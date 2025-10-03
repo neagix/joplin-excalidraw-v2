@@ -4,7 +4,7 @@
 
 "@excalidraw/excalidraw@0.17.2":
   version "0.17.2"
-  resolved "https://registry.npmjs.org/@excalidraw/excalidraw/-/excalidraw-0.17.2.tgz"
+  resolved "https://registry.yarnpkg.com/@excalidraw/excalidraw/-/excalidraw-0.17.2.tgz#9a636a1e6bb3c88c5883347d3a7e75e9cce8ab96"
   integrity sha512-7pqUWD8+mPjDhF4XxG3gw4rvE2JGaLW3Vss5UZfTbITPxAtFaGEc1K081bncitnaYhUwN9ENJE0i87QB3poDwQ==
 
 "@gar/promisify@^1.0.1":
@@ -73,9 +73,9 @@
   integrity sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==
 
 "@types/node@^14.0.14":
-  version "14.18.31"
-  resolved "https://registry.npmjs.org/@types/node/-/node-14.18.31.tgz"
-  integrity sha512-vQAnaReSQkEDa8uwAyQby8bYGKu84R/deEc6mg5T8fX6gzCn8QW6rziSgsti1fNvsrswKUKPnVTi7uoB+u62Mw==
+  version "14.18.63"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.63.tgz#1788fa8da838dbb5f9ea994b834278205db6ca2b"
+  integrity sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -895,11 +895,6 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
-
-crypto-js@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.npmmirror.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
-  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -2754,7 +2749,7 @@ safe-regex@^1.1.0:
 
 safer-buffer@^2.1.0:
   version "2.1.2"
-  resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 scheduler@^0.20.2:

@@ -5,6 +5,7 @@ export default defineConfig({
   root: resolve(__dirname, "src/local-excalidraw"),
   base: './',
   build: {
+    chunkSizeWarningLimit: 3000,
     outDir: resolve(__dirname, "dist/local-excalidraw"),
     rollupOptions: {
       output: {

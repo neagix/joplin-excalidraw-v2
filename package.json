@@ -4,8 +4,7 @@
   "scripts": {
     "dist:webview": "vite build --config vite-webview.config.ts --emptyOutDir",
     "dist:local": "vite build --config vite-local.config.ts --emptyOutDir",
-    "dist": "SET NODE_OPTIONS=--openssl-legacy-provider && webpack --joplin-plugin-config buildMain && npm run dist:webview && npm run dist:local && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
-    "prepare": "npm run dist",
+    "dist": "export NODE_OPTIONS=--openssl-legacy-provider && webpack --joplin-plugin-config buildMain && npm run dist:webview && npm run dist:local && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
     "update": "npm install -g generator-joplin && yo joplin --update"
   },
   "license": "MIT",

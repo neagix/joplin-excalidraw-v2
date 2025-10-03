@@ -75,7 +75,7 @@ const start = async () => {
   }
 
   webviewApi.onMessage(async ({ message }) => {
-    console.log(message);
+    console.log("received message:", message);
     if (processingMessage === message.message)
       return console.log("ALREADY PROCESSING", message.message);
 
@@ -87,7 +87,7 @@ const start = async () => {
       stopped = true;
     }
 
-    console.log("done-processing");
+    console.log("done-processing", message.message);
     processingMessage = false;
   });
 };

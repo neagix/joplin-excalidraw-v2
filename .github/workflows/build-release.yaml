@@ -36,25 +36,33 @@ jobs:
           name: publish-${{ github.event.pull_request.number }}
           path: publish/
       
-      # For Main Branch: Publish package and create release
-      - name: Publish to npm
-        if: github.ref == 'refs/heads/main'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish
-
+      # For Main Branch: Create release and publish package to npm
       - name: Get version from package.json
         if: github.ref == 'refs/heads/main'
         id: version
         run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
-      
-      - name: Get .jpl file
+
+      - name: "Check if release v${{ steps.version.outputs.VERSION }} already exists"
         if: github.ref == 'refs/heads/main'
+        id: check_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          if gh release view "v$VERSION" &>/dev/null; then
+            echo "Release v$VERSION already exists, skipping a new release..."
+            echo "EXISTS=1" >> $GITHUB_OUTPUT
+          else
+            echo "EXISTS=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get .jpl file
+        if: github.ref == 'refs/heads/main' && steps.check_release.outputs.EXISTS == '0'
         id: jpl
         run: echo "JPL_FILE=$(ls publish/*.jpl)" >> $GITHUB_OUTPUT
-      
-      - name: Create Release
-        if: github.ref == 'refs/heads/main'
+
+      - name: "Create Release v${{ steps.version.outputs.VERSION }}"
+        if: github.ref == 'refs/heads/main' && steps.check_release.outputs.EXISTS == '0'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -62,3 +70,9 @@ jobs:
             "${{ steps.jpl.outputs.JPL_FILE }}" \
             --title "Release v${{ steps.version.outputs.VERSION }}" \
             --generate-notes
+
+      - name: "Publish v${{ steps.version.outputs.VERSION }} to npm"
+        if: github.ref == 'refs/heads/main' && steps.check_release.outputs.EXISTS == '0'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish

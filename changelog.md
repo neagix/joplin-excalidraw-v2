@@ -26,3 +26,7 @@
 ## v1.5.1 - 2024-01-20
 
 - smallzh: use an SVG to display the drawing content after clicking a render button
+
+## v2.0.0 - 2025-10-03
+
+- neagix: auto-save SVG on change, use local assets, better resource titles, support conversion of v1 excalidraw resources

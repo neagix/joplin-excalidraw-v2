@@ -1,5 +1,5 @@
 {
-  "name": "joplin-plugin-joplin-excalidraw",
+  "name": "joplin-plugin-joplin-excalidraw-v2",
   "version": "2.0.0",
   "scripts": {
     "dist:webview": "vite build --config vite-webview.config.ts --emptyOutDir",
@@ -9,7 +9,8 @@
   },
   "license": "MIT",
   "keywords": [
-    "joplin-plugin"
+    "joplin-plugin",
+    "excalidraw"
   ],
   "files": [
     "publish"

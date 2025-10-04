@@ -35,7 +35,13 @@ jobs:
           name: publish-${{ github.event.pull_request.number }}
           path: publish/
       
-      # For Main Branch: Create release
+      # For Main Branch: Publish package and create release
+      - name: Publish to npm
+        if: github.ref == 'refs/heads/main'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+
       - name: Get version from package.json
         if: github.ref == 'refs/heads/main'
         id: version

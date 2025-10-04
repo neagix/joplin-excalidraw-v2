@@ -1,0 +1,57 @@
+name: Build and Release
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Build
+        run: npm run dist
+      
+      # For Pull Requests: Upload artifact
+      - name: Upload artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-${{ github.event.pull_request.number }}
+          path: publish/
+      
+      # For Main Branch: Create release
+      - name: Get version from package.json
+        if: github.ref == 'refs/heads/main'
+        id: version
+        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+      
+      - name: Get .jpl file
+        if: github.ref == 'refs/heads/main'
+        id: jpl
+        run: echo "JPL_FILE=$(ls publish/*.jpl)" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.VERSION }}" \
+            "${{ steps.jpl.outputs.JPL_FILE }}" \
+            --title "Release v${{ steps.version.outputs.VERSION }}" \
+            --generate-notes

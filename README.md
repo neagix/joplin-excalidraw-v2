@@ -32,6 +32,9 @@ In Joplin you can use the `dist/` directory directly by setting it under `Tools`
 
 ## Notes & credits
 
+> [!CAUTION]
+> Not compatible with the Freehand Drawing plugin, it causes glitches when both are enabled.
+
 - This is a fork of https://github.com/artikell/joplin-excalidraw; notes created with that version are currently supported
 - The [excalidraw](https://github.com/excalidraw/excalidraw) library is bundled into the plugin, together with fonts and assets.
 - Tested on MacOS, Linux and Windows Desktop apps
